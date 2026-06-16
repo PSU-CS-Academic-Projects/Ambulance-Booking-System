@@ -1,0 +1,33 @@
+# Django Core
+Django==5.2.5
+asgiref==3.9.1
+sqlparse==0.5.3
+tzdata==2025.2
+
+# Django Extensions
+django-allauth==65.11.2
+django-pwa==2.0.1
+django-widget-tweaks==1.5.0
+djangorestframework==3.16.1
+
+# Authentication & Security
+cryptography==46.0.1
+PyJWT==2.8.0
+certifi==2025.8.3
+
+# Database
+mysqlclient==2.2.7
+PyMySQL==1.1.2
+
+# Utilities
+requests==2.32.5
+python-dateutil==2.9.0.post0
+Pillow==12.1.0
+Faker==37.5.3
+
+# Testing
+pytest==9.0.2
+
+# Additional
+MarkupSafe==3.0.3
+Werkzeug==3.1.3
