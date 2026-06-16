@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Driver Dashboard{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Driver Dashboard</h1>
+    <p>Welcome, {{ driver }}</p>
+</div>
+
+{% if active_booking %}
+<div class="dispatch-alert">
+    <div class="dispatch-alert__header">
+        ACTIVE DISPATCH — Booking #{{ active_booking.pk }}
+    </div>
+    <div class="dispatch-alert__body">
+        <div class="detail-grid">
+            <div>
+                <p><strong>Patient:</strong> {{ active_booking.patient.get_full_name|default:active_booking.patient.username }}</p>
+                <p><strong>Emergency:</strong> {{ active_booking.emergency_type }}</p>
+                <p><strong>Pickup:</strong> {{ active_booking.pickup_address }}</p>
+                <p><strong>Destination:</strong> {{ active_booking.destination_hospital }}</p>
+                {% if active_booking.notes %}<p><strong>Notes:</strong> {{ active_booking.notes }}</p>{% endif %}
+            </div>
+            <div>
+                <p><strong>Current Status:</strong>
+                    <span class="status-badge status-badge--{{ active_booking.status }}">
+                        {{ active_booking.get_status_display }}
+                    </span>
+                </p>
+                <p><strong>Dispatched:</strong> {{ active_booking.dispatched_time|date:"h:i A"|default:"—" }}</p>
+            </div>
+        </div>
+
+        {# Driver Status Update Form #}
+        <div class="status-update-form" style="margin-top: 1.5rem;">
+            <h3>Update Status</h3>
+            <form method="post" action="{% url 'driver_update_status' active_booking.pk %}">
+                {% csrf_token %}
+                <div class="form-row">
+                    <div class="form-group">
+                        {{ form.status }}
+                    </div>
+                    <button type="submit" class="btn btn--primary">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% else %}
+<div class="empty-state">
+    <div class="empty-state__icon">✅</div>
+    <h2>No Active Dispatch</h2>
+    <p>You currently have no assigned bookings. Stand by.</p>
+</div>
+{% endif %}
+
+{# Driver's unit info #}
+<div class="card" style="margin-top: 1.5rem;">
+    <div class="card__header">My Assigned Unit</div>
+    <div class="card__body">
+        {% if driver.assigned_ambulance %}
+        <div class="detail-row"><span>Unit Number</span><strong>{{ driver.assigned_ambulance.unit_number }}</strong></div>
+        <div class="detail-row"><span>Plate</span><strong>{{ driver.assigned_ambulance.plate_number }}</strong></div>
+        <div class="detail-row"><span>Type</span><strong>{{ driver.assigned_ambulance.get_ambulance_type_display }}</strong></div>
+        <div class="detail-row"><span>Unit Status</span>
+            <span class="status-badge status-badge--{{ driver.assigned_ambulance.status }}">
+                {{ driver.assigned_ambulance.get_status_display }}
+            </span>
+        </div>
+        {% else %}
+        <p class="text-muted">No ambulance unit assigned yet. Contact your admin.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

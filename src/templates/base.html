@@ -1,0 +1,126 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}MediResponse{% endblock %} — Ambulance Booking System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+{% if user.is_authenticated %}
+{# ═══════════ TOPBAR ═══════════ #}
+<header class="topbar">
+    <div class="topbar__left">
+        <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+        <a href="{% url 'dashboard' %}" class="topbar__brand">
+            {# Medical cross SVG logo #}
+            <svg class="topbar__logo" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="32" height="32" rx="6" fill="white" fill-opacity="0.15"/>
+                <rect x="13" y="6" width="6" height="20" rx="2" fill="white"/>
+                <rect x="6" y="13" width="20" height="6" rx="2" fill="white"/>
+            </svg>
+            <span class="topbar__name">MediResponse</span>
+        </a>
+    </div>
+    <div class="topbar__right">
+        <span class="topbar__user">
+            {{ user.get_full_name|default:user.username }}
+            {% if user.profile %}
+            <span class="role-badge role-badge--{{ user.profile.role }}">{{ user.profile.role|capfirst }}</span>
+            {% endif %}
+        </span>
+        <form method="post" action="{% url 'logout' %}" style="display:inline;">
+    {% csrf_token %}
+    <button type="submit" class="topbar__logout">Logout</button>
+</form>
+    </div>
+</header>
+
+{# ═══════════ LAYOUT WRAPPER ═══════════ #}
+<div class="layout">
+
+    {# ═══════════ SIDEBAR ═══════════ #}
+    <aside class="sidebar" id="sidebar">
+        <nav class="sidebar__nav">
+
+            {% if user.is_superuser or user.profile.role == 'admin' %}
+            {# ADMIN SIDEBAR #}
+            <p class="sidebar__section-label">Dispatch</p>
+            <a href="{% url 'admin_dashboard' %}" class="sidebar__link {% if request.resolver_match.url_name == 'admin_dashboard' %}active{% endif %}">
+                <span class="sidebar__icon"></span> Dashboard
+            </a>
+            <a href="{% url 'admin_bookings_list' %}" class="sidebar__link {% if 'bookings' in request.resolver_match.url_name %}active{% endif %}">
+                <span class="sidebar__icon"></span> All Bookings
+            </a>
+            <p class="sidebar__section-label">Fleet</p>
+            <a href="{% url 'admin_fleet' %}" class="sidebar__link {% if 'fleet' in request.resolver_match.url_name %}active{% endif %}">
+                <span class="sidebar__icon"></span> Ambulance Fleet
+            </a>
+            <a href="{% url 'admin_drivers' %}" class="sidebar__link {% if request.resolver_match.url_name == 'admin_drivers' %}active{% endif %}">
+                <span class="sidebar__icon"></span> Drivers
+            </a>
+            <p class="sidebar__section-label">Records</p>
+            <a href="{% url 'admin_patients' %}" class="sidebar__link {% if request.resolver_match.url_name == 'admin_patients' %}active{% endif %}">
+                <span class="sidebar__icon"></span> Patients
+            </a>
+            <a href="{% url 'admin_reports' %}" class="sidebar__link {% if request.resolver_match.url_name == 'admin_reports' %}active{% endif %}">
+                <span class="sidebar__icon"></span> Reports
+            </a>
+
+            {% elif user.profile.role == 'patient' %}
+            {# PATIENT SIDEBAR #}
+            <p class="sidebar__section-label">My Care</p>
+            <a href="{% url 'patient_dashboard' %}" class="sidebar__link {% if request.resolver_match.url_name == 'patient_dashboard' %}active{% endif %}">
+                <span class="sidebar__icon"></span> Dashboard
+            </a>
+            <a href="{% url 'new_booking' %}" class="sidebar__link {% if request.resolver_match.url_name == 'new_booking' %}active{% endif %}">
+                <span class="sidebar__icon"></span> Request Ambulance
+            </a>
+            <a href="{% url 'booking_history' %}" class="sidebar__link {% if request.resolver_match.url_name == 'booking_history' %}active{% endif %}">
+                <span class="sidebar__icon"></span> Booking History
+            </a>
+
+            {% elif user.profile.role == 'driver' %}
+            {# DRIVER SIDEBAR #}
+            <p class="sidebar__section-label">Dispatch</p>
+            <a href="{% url 'driver_dashboard' %}" class="sidebar__link {% if request.resolver_match.url_name == 'driver_dashboard' %}active{% endif %}">
+                <span class="sidebar__icon"></span> My Dashboard
+            </a>
+            {% endif %}
+
+        </nav>
+    </aside>
+
+    {# ═══════════ MAIN CONTENT ═══════════ #}
+    <main class="content">
+        {# Flash messages #}
+        {% if messages %}
+        <div class="messages-wrap">
+            {% for message in messages %}
+            <div class="alert alert--{{ message.tags }}">
+                {{ message }}
+                <button onclick="this.parentElement.remove()" class="alert__close">×</button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+</div><!-- /.layout -->
+
+{% else %}
+{# Not logged in — simple centered layout #}
+<div class="auth-wrapper">
+    {% block auth_content %}{% endblock %}
+</div>
+{% endif %}
+
+</body>
+</html>

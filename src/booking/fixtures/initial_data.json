@@ -1,0 +1,87 @@
+[
+  {
+    "model": "booking.emergencytype",
+    "pk": 1,
+    "fields": { "name": "Cardiac Arrest", "description": "Patient experiencing heart attack or cardiac emergency" }
+  },
+  {
+    "model": "booking.emergencytype",
+    "pk": 2,
+    "fields": { "name": "Accident / Trauma", "description": "Road accident, fall, or physical trauma" }
+  },
+  {
+    "model": "booking.emergencytype",
+    "pk": 3,
+    "fields": { "name": "Stroke", "description": "Patient showing signs of stroke (facial drooping, slurred speech)" }
+  },
+  {
+    "model": "booking.emergencytype",
+    "pk": 4,
+    "fields": { "name": "Childbirth", "description": "Patient in labor or experiencing pregnancy complications" }
+  },
+  {
+    "model": "booking.emergencytype",
+    "pk": 5,
+    "fields": { "name": "Respiratory Distress", "description": "Difficulty breathing, asthma attack, or airway obstruction" }
+  },
+  {
+    "model": "booking.emergencytype",
+    "pk": 6,
+    "fields": { "name": "Others", "description": "Other medical emergencies not listed above" }
+  },
+  {
+    "model": "booking.ambulance",
+    "pk": 1,
+    "fields": {
+      "unit_number": "AMB-001",
+      "plate_number": "MED 1001",
+      "ambulance_type": "ALS",
+      "status": "available",
+      "notes": "Fully equipped Advanced Life Support unit"
+    }
+  },
+  {
+    "model": "booking.ambulance",
+    "pk": 2,
+    "fields": {
+      "unit_number": "AMB-002",
+      "plate_number": "MED 1002",
+      "ambulance_type": "BLS",
+      "status": "available",
+      "notes": "Basic Life Support unit — ideal for non-critical transports"
+    }
+  },
+  {
+    "model": "booking.ambulance",
+    "pk": 3,
+    "fields": {
+      "unit_number": "AMB-003",
+      "plate_number": "MED 1003",
+      "ambulance_type": "ALS",
+      "status": "available",
+      "notes": ""
+    }
+  },
+  {
+    "model": "booking.ambulance",
+    "pk": 4,
+    "fields": {
+      "unit_number": "AMB-004",
+      "plate_number": "MED 1004",
+      "ambulance_type": "BLS",
+      "status": "maintenance",
+      "notes": "Scheduled for brake replacement — back in service Monday"
+    }
+  },
+  {
+    "model": "booking.ambulance",
+    "pk": 5,
+    "fields": {
+      "unit_number": "AMB-005",
+      "plate_number": "MED 1005",
+      "ambulance_type": "ALS",
+      "status": "available",
+      "notes": "Newest unit in fleet — fully stocked"
+    }
+  }
+]

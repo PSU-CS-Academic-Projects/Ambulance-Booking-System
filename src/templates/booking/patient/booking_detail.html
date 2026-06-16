@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% block title %}Booking #{{ booking.pk }}{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Booking #{{ booking.pk }}</h1>
+    <span class="status-badge status-badge--{{ booking.status }} status-badge--lg" id="status-badge">
+        {{ booking.get_status_display }}
+    </span>
+</div>
+
+<div class="detail-grid">
+    {# Left: Booking Info #}
+    <div class="card">
+        <div class="card__header">Request Details</div>
+        <div class="card__body">
+            <div class="detail-row"><span>Pickup</span><strong>{{ booking.pickup_address }}</strong></div>
+            <div class="detail-row"><span>Destination</span><strong>{{ booking.destination_hospital }}</strong></div>
+            <div class="detail-row"><span>Emergency</span><strong>{{ booking.emergency_type }}</strong></div>
+            <div class="detail-row"><span>Requested</span><strong>{{ booking.requested_time|date:"M d, Y h:i A" }}</strong></div>
+            {% if booking.notes %}
+            <div class="detail-row"><span>Notes</span><strong>{{ booking.notes }}</strong></div>
+            {% endif %}
+        </div>
+    </div>
+
+    {# Right: Assignment Info #}
+    <div class="card">
+        <div class="card__header">Dispatch Assignment</div>
+        <div class="card__body">
+            {% if booking.assigned_ambulance %}
+            <div class="detail-row"><span>Unit</span><strong>{{ booking.assigned_ambulance.unit_number }}</strong></div>
+            <div class="detail-row"><span>Plate</span><strong>{{ booking.assigned_ambulance.plate_number }}</strong></div>
+            <div class="detail-row"><span>Type</span><strong>{{ booking.assigned_ambulance.get_ambulance_type_display }}</strong></div>
+            {% else %}
+            <p class="text-muted">Waiting for assignment...</p>
+            {% endif %}
+
+            {% if booking.assigned_driver %}
+            <div class="detail-row"><span>Driver</span><strong>{{ booking.assigned_driver }}</strong></div>
+            {% endif %}
+
+            {% if booking.dispatched_time %}
+            <div class="detail-row"><span>Dispatched</span><strong>{{ booking.dispatched_time|date:"h:i A" }}</strong></div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{# Status Timeline #}
+<div class="card" style="margin-top: 1.5rem;">
+    <div class="card__header">Status History</div>
+    <div class="card__body">
+        <div class="timeline" id="status-timeline">
+            {% for log in status_logs %}
+            <div class="timeline__item">
+                <div class="timeline__dot timeline__dot--{{ log.status }}"></div>
+                <div class="timeline__content">
+                    <strong>{{ log.get_status_display|default:log.status }}</strong>
+                    <span class="text-muted">{{ log.timestamp|date:"M d, Y h:i A" }}</span>
+                    {% if log.notes %}<p>{{ log.notes }}</p>{% endif %}
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-muted">No status history yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<div style="margin-top: 1rem;">
+    <a href="{% url 'patient_dashboard' %}" class="btn btn--outline">← Back to Dashboard</a>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Auto-refresh booking status every 30 seconds using fetch()
+// This updates the status badge without reloading the whole page
+
+const bookingId = {{ booking.pk }};
+const statusUrl = "{% url 'booking_status_json' booking.pk %}";
+
+// Status display names
+const statusLabels = {
+    'pending': 'Pending',
+    'dispatched': 'Dispatched',
+    'en_route': 'En Route',
+    'arrived': 'Arrived at Scene',
+    'transporting': 'Transporting',
+    'completed': 'Completed',
+    'cancelled': 'Cancelled',
+};
+
+async function refreshStatus() {
+    try {
+        const response = await fetch(statusUrl);
+        const data = await response.json();
+
+        // Update the status badge
+        const badge = document.getElementById('status-badge');
+        if (badge) {
+            badge.textContent = data.status_display;
+            // Update the CSS class for color
+            badge.className = `status-badge status-badge--${data.status} status-badge--lg`;
+        }
+
+        // If completed or cancelled, stop refreshing
+        if (data.status === 'completed' || data.status === 'cancelled') {
+            clearInterval(refreshInterval);
+            // Reload page to show final state
+            setTimeout(() => location.reload(), 2000);
+        }
+    } catch (err) {
+        console.error('Could not refresh status:', err);
+    }
+}
+
+// Refresh every 30 seconds
+const refreshInterval = setInterval(refreshStatus, 30000);
+</script>
+{% endblock %}

@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% block title %}Manage Booking #{{ booking.pk }}{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1>Booking #{{ booking.pk }}</h1>
+        <p style="color: var(--color-text-muted); font-size: 0.875rem; margin-top: 0.25rem;">
+            Submitted by {{ booking.patient.get_full_name|default:booking.patient.username }}
+            on {{ booking.requested_time|date:"M d, Y h:i A" }}
+        </p>
+    </div>
+    <div style="display: flex; gap: 0.75rem; align-items: center;">
+        <span class="status-badge status-badge--{{ booking.status }} status-badge--lg">
+            {{ booking.get_status_display }}
+        </span>
+        <a href="{% url 'admin_bookings_list' %}" class="btn btn--outline">← Back to List</a>
+    </div>
+</div>
+
+<div class="detail-grid">
+
+    <div class="card">
+        <div class="card__header">Request Information</div>
+        <div class="card__body">
+            <div class="detail-row">
+                <span>Patient</span>
+                <strong>{{ booking.patient.get_full_name|default:booking.patient.username }}</strong>
+            </div>
+            <div class="detail-row">
+                <span>Emergency</span>
+                <strong>{{ booking.emergency_type }}</strong>
+            </div>
+            <div class="detail-row">
+                <span>Pickup Address</span>
+                <strong>{{ booking.pickup_address }}</strong>
+            </div>
+            <div class="detail-row">
+                <span>Destination</span>
+                <strong>{{ booking.destination_hospital }}</strong>
+            </div>
+            <div class="detail-row">
+                <span>Requested At</span>
+                <strong>{{ booking.requested_time|date:"M d, Y h:i A" }}</strong>
+            </div>
+            {% if booking.dispatched_time %}
+            <div class="detail-row">
+                <span>Dispatched At</span>
+                <strong>{{ booking.dispatched_time|date:"M d, Y h:i A" }}</strong>
+            </div>
+            {% endif %}
+            {% if booking.completed_time %}
+            <div class="detail-row">
+                <span>Completed At</span>
+                <strong>{{ booking.completed_time|date:"M d, Y h:i A" }}</strong>
+            </div>
+            {% endif %}
+            {% if booking.response_time_minutes %}
+            <div class="detail-row">
+                <span>Response Time</span>
+                <strong>{{ booking.response_time_minutes }} minutes</strong>
+            </div>
+            {% endif %}
+            {% if booking.notes %}
+            <div class="detail-row">
+                <span>Notes</span>
+                <strong>{{ booking.notes }}</strong>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card__header">Assign &amp; Update Status</div>
+        <div class="card__body">
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label>Assign Ambulance Unit</label>
+                    {{ form.assigned_ambulance }}
+                    <span style="font-size: 0.75rem; color: var(--color-text-muted);">
+                        Only available units are shown
+                    </span>
+                </div>
+                <div class="form-group">
+                    <label>Assign Driver</label>
+                    {{ form.assigned_driver }}
+                    <span style="font-size: 0.75rem; color: var(--color-text-muted);">
+                        Only available drivers are shown
+                    </span>
+                </div>
+                <div class="form-group">
+                    <label>Booking Status</label>
+                    {{ form.status }}
+                </div>
+                <div style="background: #fff3cd; border-radius: 6px; padding: 0.75rem; font-size: 0.82rem; margin: 0.75rem 0;">
+                    💡 Setting status to <strong>Dispatched</strong> will automatically mark
+                    the ambulance as "On Call" and the driver as unavailable.
+                </div>
+                <button type="submit" class="btn btn--primary btn--full">
+                    ✅ Update Booking
+                </button>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<div class="card" style="margin-top: 1.5rem;">
+    <div class="card__header">Status History / Timeline</div>
+    <div class="card__body">
+        <div class="timeline">
+            {% for log in status_logs %}
+            <div class="timeline__item">
+                <div class="timeline__dot timeline__dot--{{ log.status }}"></div>
+                <div class="timeline__content">
+                    <strong>{{ log.status|capfirst }}</strong>
+                    <span class="text-muted">
+                        — {{ log.timestamp|date:"M d, Y h:i A" }}
+                        {% if log.updated_by %} by {{ log.updated_by.username }}{% endif %}
+                    </span>
+                    {% if log.notes %}<p>{{ log.notes }}</p>{% endif %}
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-muted">No status history yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

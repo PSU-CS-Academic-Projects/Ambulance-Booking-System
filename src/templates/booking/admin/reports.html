@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Reports{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Reports — Last 7 Days</h1>
+</div>
+
+<div class="card">
+    <div class="card__header">Daily Booking Summary</div>
+    <div class="table-wrap">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Date</th><th>Total Bookings</th><th>Completed</th><th>Completion Rate</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in report_data %}
+                <tr>
+                    <td>{{ row.date }}</td>
+                    <td>{{ row.total }}</td>
+                    <td>{{ row.completed }}</td>
+                    <td>
+                        {% if row.total > 0 %}
+                            {% widthratio row.completed row.total 100 %}%
+                        {% else %}—{% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{# Simple visual bar chart using CSS #}
+<div class="card" style="margin-top: 1.5rem;">
+    <div class="card__header">Booking Volume (Visual)</div>
+    <div class="card__body">
+        <div class="bar-chart">
+            {% for row in report_data %}
+            <div class="bar-chart__col">
+                <div class="bar-chart__bar" style="height: {% if row.total %}{{ row.total|add:'0' }}0px{% else %}4px{% endif %};"></div>
+                <div class="bar-chart__label">{{ row.date }}</div>
+                <div class="bar-chart__val">{{ row.total }}</div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

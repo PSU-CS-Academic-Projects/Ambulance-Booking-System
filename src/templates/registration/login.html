@@ -1,0 +1,231 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login — MediResponse</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #c0152a 0%, #7b0d1a 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+
+        .login-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 3rem 2.5rem;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-logo {
+            width: 64px;
+            height: 64px;
+            background: #c0152a;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.25rem;
+        }
+
+        .login-logo svg {
+            width: 32px;
+            height: 32px;
+        }
+
+        .login-header h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #c0152a;
+            margin-bottom: 0.25rem;
+            letter-spacing: -0.02em;
+        }
+
+        .login-header p {
+            font-size: 0.875rem;
+            color: #888;
+        }
+
+        .alert-error {
+            background: #fce4ec;
+            color: #b71c1c;
+            border-left: 4px solid #e53935;
+            border-radius: 8px;
+            padding: 0.875rem 1rem;
+            font-size: 0.875rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #444;
+        }
+
+        .form-group input {
+            padding: 0.875rem 1rem;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            color: #1a1a1a;
+            background: #fafafa;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            width: 100%;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #c0152a;
+            box-shadow: 0 0 0 3px rgba(192,21,42,0.08);
+            background: #fff;
+        }
+
+        .form-group input::placeholder {
+            color: #bbb;
+        }
+
+        .btn-signin {
+            width: 100%;
+            padding: 0.9rem;
+            background: #c0152a;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.2s ease;
+            margin-top: 0.5rem;
+        }
+
+        .btn-signin:hover {
+            background: #9b1022;
+            transform: translateY(-1px);
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.875rem;
+            color: #888;
+        }
+
+        .login-footer a {
+            color: #c0152a;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .login-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .divider {
+            height: 1px;
+            background: #f0f0f0;
+            margin: 1.5rem 0;
+        }
+
+        .system-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: 0.72rem;
+            color: #bbb;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .system-badge::before,
+        .system-badge::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-card">
+    <div class="login-header">
+        <div class="login-logo">
+            <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="13" y="4" width="6" height="24" rx="2" fill="white"/>
+                <rect x="4" y="13" width="24" height="6" rx="2" fill="white"/>
+            </svg>
+        </div>
+        <h1>MediResponse</h1>
+    </div>
+
+    {% if form.errors %}
+    <div class="alert-error">
+        Invalid username or password. Please try again.
+    </div>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="id_username">Username</label>
+            <input
+                type="text"
+                name="username"
+                id="id_username"
+                placeholder="Enter your username"
+                required
+                autofocus>
+        </div>
+        <div class="form-group">
+            <label for="id_password">Password</label>
+            <input
+                type="password"
+                name="password"
+                id="id_password"
+                placeholder="Enter your password"
+                required>
+        </div>
+        <button type="submit" class="btn-signin">Sign In</button>
+    </form>
+
+    <div class="divider"></div>
+
+    <div class="system-badge">AMBULANCE BOOKING SYSTEM</div>
+
+    <p class="login-footer">
+        Don't have an account? <a href="{% url 'register' %}">Register here</a>
+    </p>
+</div>
+
+</body>
+</html>

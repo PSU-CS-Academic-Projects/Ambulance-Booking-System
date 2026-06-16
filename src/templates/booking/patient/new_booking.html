@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Request Ambulance{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Request an Ambulance</h1>
+    <p>Fill in the details below. Our dispatch team will assign a unit immediately.</p>
+</div>
+
+<div class="form-card">
+    <form method="post" class="booking-form">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label>Pickup Address *</label>
+            {{ form.pickup_address }}
+            {% if form.pickup_address.errors %}
+            <span class="form-error">{{ form.pickup_address.errors.0 }}</span>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label>Destination Hospital *</label>
+            {{ form.destination_hospital }}
+        </div>
+
+        <div class="form-group">
+            <label>Emergency Type *</label>
+            {{ form.emergency_type }}
+        </div>
+
+        <div class="form-group">
+            <label>Additional Notes</label>
+            {{ form.notes }}
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn--danger btn--full">
+             Submit Emergency Request
+            </button>
+            <a href="{% url 'patient_dashboard' %}" class="btn btn--outline btn--full">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

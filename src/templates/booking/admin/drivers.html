@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Driver Management{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Driver Management</h1>
+</div>
+
+<div class="card">
+    <div class="table-wrap">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th><th>Username</th><th>License #</th>
+                    <th>Contact</th><th>Assigned Unit</th><th>Available</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for driver in drivers %}
+                <tr>
+                    <td>{{ driver.user.get_full_name|default:driver.user.username }}</td>
+                    <td>{{ driver.user.username }}</td>
+                    <td>{{ driver.license_number }}</td>
+                    <td>{{ driver.contact_number }}</td>
+                    <td>{% if driver.assigned_ambulance %}{{ driver.assigned_ambulance.unit_number }}{% else %}<span class="text-muted">None</span>{% endif %}</td>
+                    <td>
+                        {% if driver.is_available %}
+                        <span class="status-badge status-badge--available">Available</span>
+                        {% else %}
+                        <span class="status-badge status-badge--on_call">On Call</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="6" class="text-center text-muted">No drivers registered.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

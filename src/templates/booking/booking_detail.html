@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Manage Booking #{{ booking.pk }}{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Booking #{{ booking.pk }}</h1>
+    <a href="{% url 'admin_bookings_list' %}" class="btn btn--outline">← Back to List</a>
+</div>
+
+<div class="detail-grid">
+    {# Booking Info #}
+    <div class="card">
+        <div class="card__header">Request Information</div>
+        <div class="card__body">
+            <div class="detail-row"><span>Patient</span><strong>{{ booking.patient.get_full_name|default:booking.patient.username }}</strong></div>
+            <div class="detail-row"><span>Emergency</span><strong>{{ booking.emergency_type }}</strong></div>
+            <div class="detail-row"><span>Pickup</span><strong>{{ booking.pickup_address }}</strong></div>
+            <div class="detail-row"><span>Destination</span><strong>{{ booking.destination_hospital }}</strong></div>
+            <div class="detail-row"><span>Requested</span><strong>{{ booking.requested_time|date:"M d, Y h:i A" }}</strong></div>
+            {% if booking.notes %}
+            <div class="detail-row"><span>Notes</span><strong>{{ booking.notes }}</strong></div>
+            {% endif %}
+        </div>
+    </div>
+
+    {# Assignment Form #}
+    <div class="card">
+        <div class="card__header">Assign & Update</div>
+        <div class="card__body">
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label>Assign Ambulance</label>
+                    {{ form.assigned_ambulance }}
+                </div>
+                <div class="form-group">
+                    <label>Assign Driver</label>
+                    {{ form.assigned_driver }}
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    {{ form.status }}
+                </div>
+                <button type="submit" class="btn btn--primary btn--full">Update Booking</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{# Status Timeline #}
+<div class="card" style="margin-top: 1.5rem;">
+    <div class="card__header">Status History</div>
+    <div class="card__body">
+        <div class="timeline">
+            {% for log in status_logs %}
+            <div class="timeline__item">
+                <div class="timeline__dot"></div>
+                <div class="timeline__content">
+                    <strong>{{ log.status|capfirst }}</strong>
+                    <span class="text-muted"> — {{ log.timestamp|date:"M d, Y h:i A" }}</span>
+                    {% if log.updated_by %}<span class="text-muted"> by {{ log.updated_by.username }}</span>{% endif %}
+                    {% if log.notes %}<p>{{ log.notes }}</p>{% endif %}
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-muted">No history yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

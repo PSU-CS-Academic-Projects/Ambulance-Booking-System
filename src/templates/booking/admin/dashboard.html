@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Dispatch Dashboard</h1>
+    <span class="text-muted">{{ "now"|date:"l, F j, Y" }}</span>
+</div>
+
+{# Stat Cards #}
+<div class="stats-grid">
+    <div class="stat-card stat-card--red">
+        <div class="stat-card__value">{{ active_count }}</div>
+        <div class="stat-card__label">Active Dispatches</div>
+    </div>
+    <div class="stat-card stat-card--orange">
+        <div class="stat-card__value">{{ today_count }}</div>
+        <div class="stat-card__label">Today's Bookings</div>
+    </div>
+    <div class="stat-card stat-card--green">
+        <div class="stat-card__value">{{ available_ambulances }}</div>
+        <div class="stat-card__label">Available Units</div>
+    </div>
+    <div class="stat-card stat-card--blue">
+        <div class="stat-card__value">{% if avg_response %}{{ avg_response }} min{% else %}—{% endif %}</div>
+        <div class="stat-card__label">Avg Response Time</div>
+    </div>
+</div>
+
+{# Recent Bookings Table #}
+<div class="card" style="margin-top: 2rem;">
+    <div class="card__header">
+        Recent Bookings
+        <a href="{% url 'admin_bookings_list' %}" class="btn btn--outline btn--sm">View All</a>
+    </div>
+    <div class="table-wrap">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th><th>Patient</th><th>Emergency</th><th>Pickup</th>
+                    <th>Status</th><th>Requested</th><th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for booking in recent_bookings %}
+                <tr>
+                    <td>#{{ booking.pk }}</td>
+                    <td>{{ booking.patient.get_full_name|default:booking.patient.username }}</td>
+                    <td>{{ booking.emergency_type }}</td>
+                    <td>{{ booking.pickup_address|truncatechars:35 }}</td>
+                    <td><span class="status-badge status-badge--{{ booking.status }}">{{ booking.get_status_display }}</span></td>
+                    <td>{{ booking.requested_time|date:"h:i A" }}</td>
+                    <td><a href="{% url 'admin_booking_detail' booking.pk %}" class="btn btn--primary btn--xs">Manage</a></td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="7" class="text-center text-muted">No bookings today.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

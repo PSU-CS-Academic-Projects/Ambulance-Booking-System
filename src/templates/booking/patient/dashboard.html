@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}My Dashboard{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Welcome back, {{ user.first_name|default:user.username }}!</h1>
+    <a href="{% url 'new_booking' %}" class="btn btn--danger"> Request Ambulance</a>
+</div>
+
+{# Active Bookings #}
+<section class="section">
+    <h2 class="section__title">Active Requests</h2>
+    {% if active_bookings %}
+        {% for booking in active_bookings %}
+        <div class="booking-card booking-card--active">
+            <div class="booking-card__header">
+                <span class="booking-card__id">Booking #{{ booking.pk }}</span>
+                <span class="status-badge status-badge--{{ booking.status }}">
+                    {{ booking.get_status_display }}
+                </span>
+            </div>
+            <div class="booking-card__body">
+                <p><strong>From:</strong> {{ booking.pickup_address }}</p>
+                <p><strong>To:</strong> {{ booking.destination_hospital }}</p>
+                <p><strong>Emergency:</strong> {{ booking.emergency_type }}</p>
+                <p><strong>Requested:</strong> {{ booking.requested_time|date:"M d, Y — h:i A" }}</p>
+                {% if booking.assigned_ambulance %}
+                <p><strong>Ambulance:</strong> {{ booking.assigned_ambulance.unit_number }}</p>
+                {% endif %}
+            </div>
+            <div class="booking-card__footer">
+                <a href="{% url 'booking_detail_patient' booking.pk %}" class="btn btn--outline btn--sm">View Details & Track</a>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+    <div class="empty-state">
+        <p>No active requests.</p>
+        <a href="{% url 'new_booking' %}" class="btn btn--primary">Make a Request</a>
+    </div>
+    {% endif %}
+</section>
+
+{# Recent History #}
+{% if recent_bookings %}
+<section class="section">
+    <h2 class="section__title">Recent History</h2>
+    <div class="table-wrap">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th><th>Emergency</th><th>Destination</th><th>Status</th><th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for booking in recent_bookings %}
+                <tr>
+                    <td>#{{ booking.pk }}</td>
+                    <td>{{ booking.emergency_type }}</td>
+                    <td>{{ booking.destination_hospital }}</td>
+                    <td><span class="status-badge status-badge--{{ booking.status }}">{{ booking.get_status_display }}</span></td>
+                    <td>{{ booking.requested_time|date:"M d, Y" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endif %}
+{% endblock %}

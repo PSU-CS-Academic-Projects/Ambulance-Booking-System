@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block auth_content %}
+<div class="auth-card auth-card--wide">
+    <div class="auth-card__header">
+        <svg width="48" height="48" viewBox="0 0 32 32" fill="none">
+            <rect width="32" height="32" rx="6" fill="#c0152a"/>
+            <rect x="13" y="6" width="6" height="20" rx="2" fill="white"/>
+            <rect x="6" y="13" width="20" height="6" rx="2" fill="white"/>
+        </svg>
+        <h1>Create Account</h1>
+        <p>MediResponse — Ambulance Booking System</p>
+    </div>
+
+    <form method="post" class="auth-form">
+        {% csrf_token %}
+        <div class="form-group">
+            <label>I am registering as: *</label>
+            <div class="role-selector">
+                <label class="role-option">
+                    <input type="radio" name="role" value="patient" checked>
+                    <span>Patient / Requester</span>
+                </label>
+                <label class="role-option">
+                    <input type="radio" name="role" value="driver">
+                    <span>Driver</span>
+                </label>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>First Name *</label>
+                {{ form.first_name }}
+                {% if form.first_name.errors %}<span class="form-error">{{ form.first_name.errors.0 }}</span>{% endif %}
+            </div>
+            <div class="form-group">
+                <label>Last Name *</label>
+                {{ form.last_name }}
+                {% if form.last_name.errors %}<span class="form-error">{{ form.last_name.errors.0 }}</span>{% endif %}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Username *</label>
+                {{ form.username }}
+                {% if form.username.errors %}<span class="form-error">{{ form.username.errors.0 }}</span>{% endif %}
+            </div>
+            <div class="form-group">
+                <label>Phone Number</label>
+                {{ form.phone }}
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Email *</label>
+            {{ form.email }}
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Password *</label>
+                {{ form.password1 }}
+                {% if form.password1.errors %}<span class="form-error">{{ form.password1.errors.0 }}</span>{% endif %}
+            </div>
+            <div class="form-group">
+                <label>Confirm Password *</label>
+                {{ form.password2 }}
+                {% if form.password2.errors %}<span class="form-error">{{ form.password2.errors.0 }}</span>{% endif %}
+            </div>
+        </div>
+        <button type="submit" class="btn btn--primary btn--full">Create Account</button>
+    </form>
+
+    <p class="auth-card__footer">
+        Already have an account? <a href="{% url 'login' %}">Sign in</a>
+    </p>
+</div>
+{% endblock %}
