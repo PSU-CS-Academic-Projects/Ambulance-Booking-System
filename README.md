@@ -1,259 +1,290 @@
-# Project Title
+# MediResponse: Ambulance Booking System
 
-> Replace this line with a one sentence description of your project.
+### Subject
+SYSTEM INTEGRATION ARCHITECTURE
 
----
-
-# How to Submit Your Project
-
-Follow these steps carefully before filling out the sections below.
-
----
-
-## Step 1 — Use This Template
-
-1. Click the **"Use this template"** button at the top of this repository
-2. Click **"Create a new repository"**
-3. Under **Owner** make sure to select **PSU-CS-Academic-Projects** and not your personal account
-
-> If you do not see PSU-CS-Academic-Projects in the owner dropdown, you have not been added as a member yet. Contact the organization owner.
-
-4. Name your repository following this format:
-
-**Good Examples**
-* Student-Attendance-System
-* Library-Management-System
-* Campus-Navigation-App
-* Online-Enrollment-System
-
-**Avoid**
-* project
-* system
-* thesis
-* finalproject
-* group1
-
-5. Set the repository to **Public**
-
-> It must be Public so it appears on the showcase website.
-
-6. Click **"Create repository from template"**
-
----
-
-## Step 2 — Set Up Your Repository
-
-After creating the repository:
-
-1. Go to your new repository page
-2. Click the **gear icon** next to the **About** section on the right side
-3. Fill in the **Description** field with a short one sentence description of your project
-4. Paste your **live demo URL** in the **Website** field if available
-5. Under **Topics** add the relevant topics for your project
-
-**Subject Topics — choose at least one:**
-* wst (web system and technology)
-* sia (system integration architecture)
-
-**Category Topics — choose one or more:**
-* web-development
-* mobile-development
-* desktop-application
-* ai
-* machine-learning
-* cybersecurity
-* game-development
-* iot
-* research-project
-
-**Technology Topics — choose all that apply:**
-* php
-* mysql
-* laravel
-* react
-* nextjs
-* flutter
-* firebase
-* java
-* python
-* csharp
-* unity
-* godot
-
-6. Click **Save changes**
-
----
-
-## Step 3 — Add Your Screenshots
-
-1. On your computer, open the project folder you just cloned or downloaded
-2. Place your screenshots inside the `screenshots/` folder
-3. Recommended screenshots to include:
-   * Login Page
-   * Dashboard
-   * Main Features
-   * Reports or Output Pages
-   * Mobile Interface (if applicable)
-4. Name your screenshots clearly:
-
-**Good Examples**
-* login.png
-* dashboard.png
-* features.png
-
-**Avoid**
-* image1.png
-* screenshot(1).png
-* untitled.png
-
----
-
-## Step 4 — Add Your Project Code
-
-Place all your project source code inside the `src/` folder.
-The structure inside `src/` will depend on your project type.
-
-If you are uploading manually through GitHub (no Git):
-
-1. Go to your repository page on GitHub
-2. Click **"Add file"** → **"Upload files"**
-3. Drag and drop your project files
-4. Scroll down and click **"Commit changes"**
-
-If you are using Git:
-
-1. Clone the repository
-
-```bash
-git clone https://github.com/PSU-CS-Academic-Projects/your-repo-name.git
-```
-
-2. Copy your project files into the cloned folder
-3. Stage and commit your files
-
-```bash
-git add .
-git commit -m "Initial project upload"
-git push origin main
-```
-
----
-
-## Step 5 — Fill Out This README
-
-Delete everything above this line including the How to Submit section once you are done setting up.
-Then fill out all the sections below.
-
----
-
-# Project Title
-
-> One sentence description of your project.
-
----
-
-## Project Information
-
-| Field | Details |
-|-------|---------|
-| Subject | e.g. Web Systems and Technologies |
-| Academic Year | e.g. 2025-2026 |
-| Project Category | e.g. Web Development |
-| Instructor | e.g. Prof. Juan Dela Cruz |
+### Academic Year
+2025-2026
 
 ### Members
+- Kimly Mark M. Bron
+- Francis Aying
+- Mark Aaron Figueroa
 
-* Full Name
-* Full Name
-* Full Name
+### Instructor
+Divine Caabay
 
 ---
 
 ## Project Description
 
-Explain what your project is and what problem it solves.
-Who is it for? What was the goal of the project?
+**MediResponse** is a comprehensive ambulance booking and dispatch management system designed to streamline emergency medical services. The platform connects patients, ambulance drivers, and administrators in a real-time environment to ensure efficient emergency response.
+
+The system enables patients to request ambulances through an intuitive web interface, dispatchers to manage bookings and assignments, and drivers to receive and track their assignments. It provides real-time status tracking, comprehensive reporting, and fleet management capabilities.
 
 ---
 
 ## Features
 
-* Feature one
-* Feature two
-* Feature three
+- **User Authentication**
+  - Role-based access control (Patient, Driver, Admin)
+  - Secure login and registration system
+  - User profile management
+
+- **Patient Features**
+  - Submit ambulance requests with emergency type selection
+  - Real-time booking status tracking
+  - Booking history and past records
+  - View assigned ambulance details and driver information
+  - Emergency address management
+
+- **Admin/Dispatcher Features**
+  - Dashboard with key metrics (active dispatches, available units, response times)
+  - Comprehensive booking management and filtering
+  - Ambulance fleet management and status tracking
+  - Driver management and assignment
+  - Patient records database
+  - Reporting and analytics
+
+- **Driver Features**
+  - View active dispatch assignments
+  - Update booking status (en route, arrived, transporting, completed)
+  - Real-time status notifications
+  - Booking completion confirmation
+
+- **System Features**
+  - Real-time dashboard updates
+  - Status tracking and logging
+  - Booking history and status transitions
+  - Emergency type categorization
+  - Fleet availability monitoring
+  - Responsive design (mobile-friendly)
 
 ---
 
 ## Technologies Used
 
-* Technology one
-* Technology two
-* Technology three
+- **Backend**: Python 3.13
+- **Framework**: Django
+- **Database**: SQLite
+- **Frontend**: HTML5, CSS3, JavaScript
+- **UI Framework**: Bootstrap (Custom CSS styling)
+- **Font**: Inter (Google Fonts)
+- **Server**: Django Development Server / Gunicorn
 
 ---
 
 ## Installation Guide
 
-> Provide clear steps so anyone can run your project locally.
+### Prerequisites
+- Python 3.8 or higher
+- pip (Python package manager)
+- Git
 
-1. Clone the repository
+### Setup Instructions
 
-```bash
-git clone https://github.com/PSU-CS-Academic-Projects/your-repo-name.git
+1. **Clone the Repository**
+   ```bash
+   git clone <repository-url>
+   cd MediResponse
+   ```
+
+2. **Create a Virtual Environment**
+   ```bash
+   python -m venv venv
+   # On Windows:
+   venv\Scripts\activate
+   # On macOS/Linux:
+   source venv/bin/activate
+   ```
+
+3. **Install Dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Apply Migrations**
+   ```bash
+   python manage.py migrate
+   ```
+
+5. **Load Initial Data**
+   ```bash
+   python manage.py loaddata booking/fixtures/initial_data.json
+   ```
+
+6. **Create Superuser (Admin Account)**
+   ```bash
+   python manage.py createsuperuser
+   ```
+   Follow prompts to create your admin account.
+
+7. **Run the Development Server**
+   ```bash
+   python manage.py runserver
+   ```
+
+8. **Access the Application**
+   - Application: `http://127.0.0.1:8000`
+   - Login with your superuser credentials
+
+---
+
+## Project Structure
+
+```
+MediResponse/
+├── booking/                    # Main Django app
+│   ├── migrations/            # Database migrations
+│   ├── fixtures/              # Initial data
+│   ├── models.py              # Database models
+│   ├── views.py               # View logic
+│   ├── forms.py               # Django forms
+│   ├── urls.py                # URL routing
+│   ├── admin.py               # Admin interface
+│   └── tests.py               # Unit tests
+├── mediresponse/              # Project settings
+│   ├── settings.py            # Django settings
+│   ├── urls.py                # Main URL router
+│   ├── wsgi.py                # WSGI config
+│   └── asgi.py                # ASGI config
+├── templates/                 # HTML templates
+│   ├── base.html              # Base template
+│   ├── booking/               # App templates
+│   │   ├── admin/            # Admin templates
+│   │   ├── driver/           # Driver templates
+│   │   └── patient/          # Patient templates
+│   └── registration/          # Auth templates
+├── static/                    # Static files
+│   ├── css/                  # Stylesheets
+│   └── js/                   # JavaScript
+├── db.sqlite3                # SQLite database
+├── manage.py                 # Django management script
+└── README.md                 # This file
 ```
 
-2. Navigate into the project folder
+---
 
-```bash
-cd your-repo-name
-```
+## Database Models
 
-3. Add any additional steps specific to your project here
-   * Import the database
-   * Configure environment settings
-   * Install dependencies
-   * Run the application
+### Core Models
+- **User** (Django built-in): Authentication user accounts
+- **UserProfile**: Extended user information with role designation
+- **Patient**: Patient-specific information
+- **Driver**: Driver credentials and contact information
+- **Ambulance**: Fleet vehicle tracking and status
+- **Booking**: Ambulance booking requests
+- **BookingStatusLog**: Audit trail for booking status changes
+- **EmergencyType**: Categorization of emergencies
+
+---
+
+## User Roles & Permissions
+
+### Patient
+- Create new ambulance bookings
+- View active bookings and tracking
+- Access booking history
+- Cannot access admin or driver functions
+
+### Driver
+- View assigned bookings/dispatches
+- Update booking status
+- Mark bookings as completed
+- Cannot access admin functions or other drivers' bookings
+
+### Admin/Dispatcher
+- Full access to all bookings
+- Fleet management
+- Driver management
+- Patient records
+- Generate reports
+- System analytics and metrics
+
+---
+
+## Default Credentials
+
+After running `python manage.py createsuperuser`, use your created credentials to login.
+
+**Sample Test Users** (after loading fixtures):
+- Emergency Types are pre-loaded
+- Ambulances are pre-loaded
+- Additional users can be created through the registration page
 
 ---
 
 ## Screenshots
 
-> Upload your screenshots inside the `screenshots/` folder and reference them here.
-
-**Login Page**
-
-![Login Page](screenshots/login.png)
-
-**Dashboard**
-
-![Dashboard](screenshots/dashboard.png)
-
-**Main Features**
-
-![Features](screenshots/features.png)
+For screenshots: [Google Drive - Screenshots](https://drive.google.com/drive/folders/1X6VY88WUBp38PGaif_kYOk9tyYemx-Nz?usp=sharing)
 
 ---
 
 ## Live Demo
 
-* Live URL: https://your-live-link-here.com
+Currently deployed locally. For production deployment, configure:
+- Web server (Nginx, Apache)
+- Production database (PostgreSQL recommended)
+- Environment variables (.env file)
+- Static file serving
+- HTTPS/SSL certificates
 
 ---
 
 ## Video Demonstration
 
-* Video Link: https://your-video-link-here.com (Optional)
+For a complete walkthrough of the system features and functionality, see:
+[Google Drive - Video Demo](https://drive.google.com/drive/folders/1iCnqd9yiJNMbcfYuJ07K9yx_hRKzU93u?usp=sharing)
 
 ---
 
 ## Future Improvements
 
-* Improvement one
-* Improvement two
-* Improvement three
+- **SMS/Email Notifications**: Automated updates to patients and drivers
+- **GPS Integration**: Real-time ambulance location tracking on maps
+- **Payment Gateway**: Online payment processing for ambulance services
+- **Advanced Analytics**: Predictive analytics for demand forecasting
+- **Mobile Apps**: Native iOS and Android applications
+- **AI-Powered Dispatch**: Machine learning for optimal ambulance assignment
+- **Multi-language Support**: Localization for different languages
+- **Accessibility Features**: Enhanced accessibility for users with disabilities
+- **Enhanced Security**: Two-factor authentication, encryption
+- **Performance Optimization**: Caching, database optimization
+- **Integration APIs**: Third-party service integrations
+- **Call Center Integration**: Phone-based booking system
+- **Insurance Integration**: Insurance verification and claims processing
 
 ---
 
-> Before submitting make sure you have completed the Repository Submission Checklist
-> in the Project Submission Guide.
-> [Project Submission Guide](https://github.com/PSU-CS-Academic-Projects/.github/blob/main/PROJECT_SUBMISSION_GUIDE.md)
+## Troubleshooting
+
+### Admin Dashboard Shows "Forbidden"
+- Ensure your admin user has a UserProfile with role='admin'
+- Run: `python fix_admin_profile.py`
+
+### Dashboard Appears Dark/Unstyled
+- Clear browser cache (Ctrl+Shift+R on Windows/Linux, Cmd+Shift+R on Mac)
+- Ensure static files are loaded correctly
+- Check CSS file is present: `static/css/style.css`
+
+### No Data in Admin Dashboard
+- Load initial data: `python manage.py loaddata booking/fixtures/initial_data.json`
+- Create test bookings through the patient interface
+
+### Database Errors
+- Run migrations: `python manage.py migrate`
+- Check database file exists: `db.sqlite3`
+
+---
+
+## Support & Contact
+
+For issues, bugs, or feature requests, please refer to the project documentation or contact the development team.
+
+---
+
+## License
+
+This project is developed as part of academic coursework at Palawan State University.
+
+---
